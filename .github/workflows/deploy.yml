@@ -1,0 +1,50 @@
+name: Deploy final del proyecto hacia Google Cloud
+
+on:
+  push:
+    branches: [ "main" ] # Se activa automáticamente al hacer push a la rama principal
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Deploy to Google Cloud via SSH
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: edssongonzalez
+        key:  ${{ secrets.SSH_KEY }}
+        port: 22
+        script: |
+          # 1. Crear la carpeta del proyecto si no existe en el servidor
+          mkdir -p ~/api-project
+          
+    - name: Copy Files to Server
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: edssongonzalez
+        key:  ${{ secrets.SSH_KEY }}
+        port: 22
+        source: "."
+        target: "~/api-project"
+
+    - name: Execute Docker Compose on Server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: edssongonzalez
+        key:  ${{ secrets.SSH_KEY }}
+        port: 22
+        script: |
+          cd ~/api-project
+          # 2. Detener contenedores anteriores para evitar conflictos de puertos
+          sudo docker-compose down || true
+          # 3. Compilar y levantar la infraestructura (API Node.js + Redis)
+          sudo docker-compose up -d --build
+          # 4. Verificar que todo quedó corriendo con éxito
+          sudo docker ps

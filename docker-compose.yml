@@ -14,7 +14,7 @@ services:
     depends_on:
       - db
 
-  # Servicio 2: Componente de Base de Datos obligatorio por rúbrica
+  # Servicio 2: Componente de base de datos vamos a utilizar redis
   db:
     image: redis:7-alpine
     ports:
