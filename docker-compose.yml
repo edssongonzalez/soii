@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  # Servicio 1: Nuestro Servidor de Aplicación (API REST)
+  api:
+    build: .
+    image: soii-api:latest
+    ports:
+      - "80:3000" # Mapea el puerto 80 público del Host al 3000 interno del contenedor
+    environment:
+      - PORT=3000
+    networks:
+      - neonet-network
+    depends_on:
+      - db
+
+  # Servicio 2: Componente de Base de Datos obligatorio por rúbrica
+  db:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - neonet-network
+
+networks:
+  neonet-network:
+    driver: bridge
