@@ -12,7 +12,7 @@ const server = http.createServer((req, ObjectResponse) => {
             status: "Online",
             message: "Sistemas Operativos II - proyecto final funcionando al 100",
             timestamp: new Date().toISOString(),
-            ambiente: "Docker Swarm en Azure Cloud"
+            ambiente: "Docker Compose en Google Cloud (GCP)"
         }));
     } else if (req.url === '/health' && req.method === 'GET') {
         ObjectResponse.writeHead(200);
