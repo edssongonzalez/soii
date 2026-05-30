@@ -1,0 +1,11 @@
+{
+  "name": "soii-api",
+  "version": "1.0.0",
+  "description": "API REST para Proyecto final de Sistemas Operativos II",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Edsson Gonzalez",
+  "license": "ISC"
+}
